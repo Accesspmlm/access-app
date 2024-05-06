@@ -98,21 +98,20 @@ const Carousel = ({ stellar }) => {
               colors={["transparent", `${theme.bg}`]}
               style={{ height: 100, marginTop: -100, zIndex: 100 }}
             />
-            <Center h="25%" zIndex={100} position="relative" bg={theme.bg}>
-              <Text
-                color="white"
-                size="3xl"
-                w={300}
-                textAlign="center"
-                fontWeight="bold"
-                mt={-80}
-              >
+            <Box
+              h="25%"
+              zIndex={100}
+              position="relative"
+              bg={theme.bg}
+              paddingHorizontal={24}
+            >
+              <Text color="white" size="3xl" w={300} fontWeight="bold" mt={-80}>
                 {item.title}
               </Text>
-              <Text color={theme.neutral} w="95%" textAlign="center">
+              <Text color={theme.neutral} w="95%">
                 {item.desc}
               </Text>
-            </Center>
+            </Box>
           </Box>
         </Pressable>
       )}

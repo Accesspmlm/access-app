@@ -1,14 +1,11 @@
-import { FlatList, Pressable } from "react-native";
+import { FlatList, Image, Pressable, StatusBar } from "react-native";
 import { Box } from "@gluestack-ui/themed";
 
 //Stores
 import { themeStore } from "@/stores";
 
-//Sections
-import ItemCategory from "./ItemCategory";
-
 //Components
-import { Carousel } from "@/components";
+import { Carousel, Header } from "@/components";
 export interface Category {
   id: string;
   name: string;
@@ -51,7 +48,25 @@ const Categories = ({ navigation }) => {
   };
 
   return (
-    <Box flex={1}>
+    <Box flex={1} position="relative">
+      {/* <Header /> */}
+      <Box
+        position="absolute"
+        padding={24}
+        paddingTop={0}
+        h={90}
+        w="100%"
+        zIndex={100}
+      >
+        <Image
+          source={require("@/assets/logo.png")}
+          style={{
+            width: 123,
+            height: 36,
+            marginTop: StatusBar.currentHeight + 10,
+          }}
+        />
+      </Box>
       <Carousel stellar={HEROS} />
     </Box>
   );
