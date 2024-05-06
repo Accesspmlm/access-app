@@ -5,10 +5,20 @@ import Navigation from "./routes";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "./config/gluestack-ui.config";
 
+//I18n
+import "@/translations";
+
+//React query
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
     <GluestackUIProvider config={config}>
-      <Navigation />
+      <QueryClientProvider client={queryClient}>
+        <Navigation />
+      </QueryClientProvider>
     </GluestackUIProvider>
   );
 };

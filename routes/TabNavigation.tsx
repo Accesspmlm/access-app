@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 //Screens
-import { Categories } from "@/screens";
+
 
 //Components
 import { CustomTabBar } from "@/components";
@@ -9,6 +9,9 @@ import { View } from "@gluestack-ui/themed";
 
 //Icons
 import { HomeIcon } from "@/assets/icons";
+
+//Navigators
+import HomeStack from "./HomeStack" 
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +26,8 @@ function MyTabs() {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tab.Screen
-        name="Categories"
-        component={Categories}
+        name="Stellar"
+        component={HomeStack}
         options={{tabBarIcon: () => <HomeIcon /> }}
       />
       <Tab.Screen name="Upload" component={PlaceholderScreen} />
