@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ImageBackground, Pressable } from "react-native";
+import { Dimensions, ImageBackground, Pressable } from "react-native";
 
 //Externals
 import { Box, Text, Spinner } from "@gluestack-ui/themed";
@@ -9,18 +9,21 @@ import { LinearGradient } from "expo-linear-gradient";
 import { themeStore } from "@/stores";
 
 //Icons
-import { StarIcon, StarIconEmpty } from "@/assets/icons";
+import { Star, Like } from "@/assets/icons";
 
 //Types
-import { Company } from "@/types";
+import { CompanyTypes } from "@/types";
 
 //Sections
 import BGCard from "./BGCard";
 import { Gallery } from "iconsax-react-native";
+import Chip from "../Chip";
+
+const WIDTH = Dimensions.get("screen").width;
 
 interface CardBusinessProps {
-  data: Company;
-  action: (id: string) => void;
+  data: CompanyTypes;
+  action: (company: CompanyTypes) => void;
 }
 
 const CardBusiness: React.FC<CardBusinessProps> = ({ data, action }) => {
@@ -29,118 +32,102 @@ const CardBusiness: React.FC<CardBusinessProps> = ({ data, action }) => {
   const [loadedBG, setLoadedBG] = useState(false);
 
   return (
-    <Pressable onPress={() => action(data._id)}>
-      <Box h={172} mb={32} borderRadius={15} overflow="hidden">
-        <ImageBackground
-          source={{ uri: data.banner }}
-          style={{ height: "100%" }}
-          onLoad={() => setLoadedBG(true)}
-        >
-          {loadedBG ? (
-            <Box position="relative" h="100%" w="100%">
-              <Box position="absolute" style={{ zIndex: 1000 }}>
-                <BGCard url={data.logo} />
+    <Pressable
+      onPress={() => action(data)}
+      style={{
+        marginBottom: 24,
+        elevation: 6,
+        backgroundColor: theme.white,
+        borderRadius: 8,
+        overflow: "hidden",
+        width: WIDTH * 0.95,
+      }}
+    >
+      <Box>
+        <Box h={172} borderRadius={15}>
+          <ImageBackground
+            source={{ uri: data.banner }}
+            onLoad={() => setLoadedBG(true)}
+          >
+            {loadedBG ? (
+              <Box position="relative" h="100%" w="100%">
+                <Box position="absolute" style={{ zIndex: 1000 }}>
+                  <BGCard url={data.logo} />
+                </Box>
+                <LinearGradient
+                  colors={[
+                    "transparent",
+                    "transparent",
+                    "transparent",
+                    `#0000004a`,
+                    `#000000c3`,
+                  ]}
+                  start={{ x: 1, y: -1 }}
+                  end={{ x: 0, y: 1 }}
+                  style={{
+                    height: "100%",
+                    marginTop: -100,
+                    zIndex: 100,
+                    position: "absolute",
+                    bottom: 0,
+                    width: "100%",
+                  }}
+                >
+                  <Box
+                    position="absolute"
+                    bottom={10}
+                    paddingHorizontal={24}
+                    flexDirection="row"
+                    gap={5}
+                  >
+                    <Chip
+                      bg={theme.primary}
+                      colorValue={theme.white}
+                      value="80"
+                      icon={<Like size={18} color={theme.white} />}
+                    />
+                    <Chip
+                      bg={theme.yellow}
+                      colorValue={theme.white}
+                      value="110"
+                      icon={<Star size={18} />}
+                    />
+                    <Chip
+                      bg={theme.green}
+                      colorValue={theme.white}
+                      value="11 Promociones"
+                      icon={<Text></Text>}
+                    />
+                  </Box>
+                </LinearGradient>
               </Box>
+            ) : (
               <Box
-                padding={10}
-                position="absolute"
-                right={0}
-                bottom={60}
-                bg={theme.green}
-                zIndex={1000}
-                borderTopLeftRadius={10}
-                borderBottomLeftRadius={10}
+                justifyContent="center"
+                alignItems="center"
+                h="100%"
+                w="100%"
+                bg="#96b2ca"
+                gap={10}
               >
-                <Text
-                  color="$white"
-                  size="xs"
-                >{`${data.activePromotions} Promociones activas`}</Text>
+                <Gallery size="32" color="#ffffff" />
+                <Spinner size="large" color="#ffffff" />
               </Box>
-              <Box
-                padding={10}
-                position="absolute"
-                right={-2}
-                bottom={-2}
-                zIndex={1000}
-                borderWidth={1}
-                borderColor="$white"
-                borderTopLeftRadius={10}
-                flexDirection="row"
-              >
-                {Array.from({ length: 5 }, (_, index) => {
-                  if (index + 1 <= data.stars) {
-                    return <StarIcon key={index} />;
-                  } else {
-                    return <StarIconEmpty key={index} />;
-                  }
-                })}
-              </Box>
-              <Box
-                w={1}
-                h={60}
-                bg="$amber100"
-                position="absolute"
-                left={10}
-                top={90}
-                zIndex={1000}
-              ></Box>
-              <Box
-                w={20}
-                h={1}
-                bg="$amber100"
-                position="absolute"
-                left={10}
-                top={150}
-                zIndex={1000}
-              ></Box>
-              <Text
-                size="xl"
-                color="$white"
-                position="absolute"
-                top={133}
-                left={40}
-                zIndex={1000}
-              >
-                {data.name}
+            )}
+          </ImageBackground>
+        </Box>
+        <Box paddingHorizontal={24} paddingVertical={8}>
+          <Text size="lg" fontWeight="$medium" color={theme.black}>
+            {data.name}
+          </Text>
+          <Box flexDirection="row">
+            {data.tags.map((tag, index) => (
+              <Text key={index + tag} size="sm" color={theme.secondaryText}>
+                {`${tag}${index + 1 != data.tags.length ? ", " : ""}`}
               </Text>
-              <LinearGradient
-                colors={["transparent", "#000000"]}
-                style={{
-                  height: 110,
-                  zIndex: 100,
-                  position: "absolute",
-                  bottom: 0,
-                  width: "100%",
-                }}
-              />
-              <LinearGradient
-                colors={["transparent", "#000000"]}
-                end={{ x: 0, y: 0.5 }}
-                start={{ x: 1, y: 0.5 }}
-                style={{
-                  height: "100%",
-                  zIndex: 100,
-                  position: "absolute",
-                  width: 80,
-                  top: 0,
-                  left: 0,
-                }}
-              />
-            </Box>
-          ) : (
-            <Box
-              justifyContent="center"
-              alignItems="center"
-              h="100%"
-              w="100%"
-              bg="#96b2ca"
-              gap={10}
-            >
-              <Gallery size="32" color="#ffffff" />
-              <Spinner size="large" color="#ffffff" />
-            </Box>
-          )}
-        </ImageBackground>
+            ))}
+          </Box>
+        </Box>
       </Box>
     </Pressable>
   );

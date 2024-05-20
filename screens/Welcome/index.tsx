@@ -1,11 +1,16 @@
-import { FlatList, Image, Pressable, StatusBar } from "react-native";
-import { Box } from "@gluestack-ui/themed";
-
+import { Image, StatusBar, Animated } from "react-native";
+import { Box, Text } from "@gluestack-ui/themed";
 //Stores
 import { themeStore } from "@/stores";
 
 //Components
-import { Carousel, Header } from "@/components";
+import { Carousel } from "@/components";
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+  State,
+} from "react-native-gesture-handler";
+
 export interface Category {
   id: string;
   name: string;
@@ -43,13 +48,41 @@ const HEROS: Hero[] = [
 const Categories = ({ navigation }) => {
   const theme = themeStore((state) => state);
 
+  const translateX = new Animated.Value(0);
+
   const handleNavigate = async () => {
-    navigation.navigate("ListBusiness");
+    navigation.navigate("HomeTab");
+  };
+
+  const onGestureEvent = Animated.event(
+    [
+      {
+        nativeEvent: {
+          translationX: translateX,
+        },
+      },
+    ],
+    { useNativeDriver: true }
+  );
+
+  const onHandlerStateChange = (event) => {
+    if (event.nativeEvent.oldState === State.ACTIVE) {
+      Animated.spring(translateX, {
+        toValue: 0, // Vuelve a la posición inicial o ajusta según la necesidad
+        bounciness: 10,
+        useNativeDriver: true,
+      }).start();
+
+      // Verifica si el círculo ha llegado al extremo derecho
+      if (event.nativeEvent.translationX >= 70) {
+        // Ajusta este valor según el ancho de tu contenedor
+        handleNavigate(); // Función que quieres ejecutar
+      }
+    }
   };
 
   return (
     <Box flex={1} position="relative">
-      {/* <Header /> */}
       <Box
         position="absolute"
         padding={24}
@@ -68,6 +101,42 @@ const Categories = ({ navigation }) => {
         />
       </Box>
       <Carousel stellar={HEROS} />
+      <Box
+        bottom={30}
+        right={24}
+        w="100%"
+        alignItems="flex-end"
+        position="absolute"
+      >
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Box
+            backgroundColor={theme.white}
+            h={70}
+            w={150}
+            borderRadius={100}
+            padding={5}
+          >
+            <PanGestureHandler
+              onGestureEvent={onGestureEvent}
+              onHandlerStateChange={onHandlerStateChange}
+            >
+              <Animated.View
+                style={{
+                  height: 60,
+                  width: 60,
+                  backgroundColor: theme.primary,
+                  borderRadius: 100,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  transform: [{ translateX }],
+                }}
+              >
+                <Text color={theme.white}>Iniciar</Text>
+              </Animated.View>
+            </PanGestureHandler>
+          </Box>
+        </GestureHandlerRootView>
+      </Box>
     </Box>
   );
 };

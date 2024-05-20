@@ -1,5 +1,9 @@
 export { default as Welcome } from "./Welcome";
-export { default as Categories } from "./Categories";
-export { default as ListBusiness } from "./ListBusiness";
+export { default as Home } from "./Home";
 export { default as Business } from "./Business";
 export { default as Filter } from "./Filter";
+export { default as Promo } from "./Promo";
+export { default as HowToGet } from "./HowToGet";
+export { default as Company } from "./Company";
+export { default as ListPromos } from "./ListPromos";
+export { default as MapScreen } from "./MapScreen";

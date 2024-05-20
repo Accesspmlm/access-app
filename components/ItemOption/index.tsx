@@ -3,15 +3,15 @@ import { Box, Text } from "@gluestack-ui/themed";
 
 //Stores
 import { themeStore } from "@/stores";
-import { Filter } from "@/screens/ListBusiness";
+import { Filter } from "@/screens/Home";
 import React from "react";
 
 interface ItemOptionProps {
-    data: Filter,
-    handleChange: (id: string) => void;
+  data: Filter;
+  handleChange: (id: string) => void;
 }
 
-const ItemOption: React.FC<ItemOptionProps> = ({data, handleChange}) => {
+const ItemOption: React.FC<ItemOptionProps> = ({ data, handleChange }) => {
   const theme = themeStore((store) => store);
   return (
     <Pressable onPress={() => handleChange(data.id)}>
@@ -23,7 +23,9 @@ const ItemOption: React.FC<ItemOptionProps> = ({data, handleChange}) => {
         borderRadius={10}
         bg={data.active ? theme.primary : theme.white}
       >
-        <Text color={data.active ? theme.white : "$textDark800"}>{data.name}</Text>
+        <Text color={data.active ? theme.white : "$textDark800"}>
+          {data.name}
+        </Text>
       </Box>
     </Pressable>
   );

@@ -10,7 +10,7 @@ import {
 } from "@gluestack-ui/themed";
 import { CloseIcon } from "@/assets/icons";
 import { ItemOption } from "@/components";
-import { Filter } from "@/screens/ListBusiness";
+import { Filter } from "@/screens/Home";
 
 interface ModalFilterBusinessProps {
   showModal: boolean;

@@ -5,3 +5,8 @@ export { default as ItemOption } from "./ItemOption";
 export { default as ModalFilterBusiness } from "./Modals/ModalFilterBusiness";
 export { default as ButtonFilters } from "./Buttons/ButtonFilters";
 export { default as Carousel } from "./Carousel";
+export { default as AutoOrientedImage } from "./AutoOrientedImage";
+export { default as Chip } from "./Chip";
+export { default as MenuOptions } from "./MenuOptions";
+export { default as Tabs } from "./Tabs";
+export { default as MarkerCompany } from "./CustomMarkers/MarkerCompany";

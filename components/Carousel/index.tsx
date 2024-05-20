@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { FlatList, Dimensions, Animated, Pressable } from "react-native";
-import { Text, Box, Image, Center } from "@gluestack-ui/themed";
+
+import { Text, Box, Image } from "@gluestack-ui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "@react-navigation/native";
 
 //Stores
 import { themeStore } from "@/stores";
+import { Star } from "@/assets/icons";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -84,34 +86,52 @@ const Carousel = ({ stellar }) => {
           onPressIn={() => setIsPressed(true)}
           onPressOut={() => setIsPressed(false)}
         >
-          <Box position="relative" w={windowWidth}>
+          <Box position="relative" w={windowWidth} height="100%">
             <Image
               zIndex={10}
               w={windowWidth}
-              h="75%"
+              h="85%"
               alt="banner"
               source={{
                 uri: item.url,
               }}
             />
             <LinearGradient
-              colors={["transparent", `${theme.bg}`]}
-              style={{ height: 100, marginTop: -100, zIndex: 100 }}
-            />
-            <Box
-              h="25%"
-              zIndex={100}
-              position="relative"
-              bg={theme.bg}
-              paddingHorizontal={24}
+              colors={["transparent", `#000000b7`, `#000000`, `#000`]}
+              style={{
+                height: "55%",
+                marginTop: -100,
+                zIndex: 100,
+                position: "absolute",
+                bottom: 0,
+                width: "100%",
+              }}
             >
-              <Text color="white" size="3xl" w={300} fontWeight="bold" mt={-80}>
-                {item.title}
-              </Text>
-              <Text color={theme.neutral} w="95%">
-                {item.desc}
-              </Text>
-            </Box>
+              <Box
+                zIndex={100}
+                position="absolute"
+                bottom={130}
+                paddingHorizontal={24}
+              >
+                <Text color="white" size="3xl" w={300} fontWeight="bold">
+                  {item.title}
+                </Text>
+                <Text color={theme.neutral}>{item.desc}</Text>
+                <Box flexDirection="row" mt={10} gap={10}>
+                  <Text color={theme.green}> - 50% </Text>
+                  <Box flexDirection="row" gap={2}>
+                    <Star />
+                    <Star />
+                    <Star />
+                    <Star />
+                    <Star />
+                  </Box>
+                </Box>
+                <Pressable style={{ marginTop: 16 }}>
+                  <Text color={theme.primary}>Ver promoción</Text>
+                </Pressable>
+              </Box>
+            </LinearGradient>
           </Box>
         </Pressable>
       )}

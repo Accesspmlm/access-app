@@ -1,20 +1,40 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { FC } from "react";
 
 //Screens
-import { Categories, ListBusiness, Business, Filter } from "@/screens";
+import {
+  Home,
+  Business,
+  Filter,
+  Promo,
+  HowToGet,
+  Company,
+  ListPromos,
+} from "@/screens";
+import { CompanyTypes, PromoTypes } from "@/types";
 
-const Stack = createNativeStackNavigator();
+export type RootStackHomeParamList = {
+  Home: undefined;
+  Promo: { promo: PromoTypes };
+  Business: undefined;
+  Filter: undefined;
+  HowToGet: undefined;
+  Company: { company: CompanyTypes };
+  ListPromos: undefined;
+};
 
-const HomeStack = () => {
+const Stack = createNativeStackNavigator<RootStackHomeParamList>();
+
+const HomeStack: FC = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="Stellar"
-      screenOptions={{ headerShown: false }}
-    >
-      <Stack.Screen name="Categories" component={Categories} />
-      <Stack.Screen name="ListBusiness" component={ListBusiness} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Promo" component={Promo} />
       <Stack.Screen name="Business" component={Business} />
       <Stack.Screen name="Filter" component={Filter} />
+      <Stack.Screen name="HowToGet" component={HowToGet} />
+      <Stack.Screen name="Company" component={Company} />
+      <Stack.Screen name="ListPromos" component={ListPromos} />
     </Stack.Navigator>
   );
 };

@@ -5,8 +5,11 @@ import { Welcome } from "@/screens";
 
 //Navigations
 import TabNaigator from "./TabNavigation";
+import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
+
+const Example = () => <Text>sdfdsf</Text>;
 
 const HomeNavigation = () => {
   return (
@@ -15,7 +18,8 @@ const HomeNavigation = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Welcome" component={Welcome} />
-      <Stack.Screen name="Home" component={TabNaigator} />
+      <Stack.Screen name="HomeTab" component={TabNaigator} />
+      <Stack.Screen name="Other" component={Example} />
     </Stack.Navigator>
   );
 };

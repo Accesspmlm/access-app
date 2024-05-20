@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 //Screens
 
-
 //Components
 import { CustomTabBar } from "@/components";
 import { View } from "@gluestack-ui/themed";
@@ -11,7 +10,9 @@ import { View } from "@gluestack-ui/themed";
 import { HomeIcon } from "@/assets/icons";
 
 //Navigators
-import HomeStack from "./HomeStack" 
+import HomeStack from "./HomeStack";
+import MapStack from "./MapStack";
+import { Map } from "iconsax-react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,11 +27,17 @@ function MyTabs() {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tab.Screen
-        name="Stellar"
+        name="HomeStack"
         component={HomeStack}
-        options={{tabBarIcon: () => <HomeIcon /> }}
+        options={{ tabBarIcon: () => <HomeIcon /> }}
       />
-      <Tab.Screen name="Upload" component={PlaceholderScreen} />
+      <Tab.Screen
+        name="MapStack"
+        component={MapStack}
+        options={{
+          tabBarIcon: () => <Map size={22} color={"#fff"} />,
+        }}
+      />
       <Tab.Screen name="Chat" component={PlaceholderScreen} />
       <Tab.Screen name="Settings" component={PlaceholderScreen} />
     </Tab.Navigator>

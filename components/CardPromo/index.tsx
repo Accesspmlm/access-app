@@ -1,72 +1,124 @@
-import { Image, ImageBackground } from "react-native";
-
-import { Box, Button, ButtonText, Text } from "@gluestack-ui/themed";
-import { LinearGradient } from "expo-linear-gradient";
-import { Promos } from "@/screens/ListBusiness";
 import React from "react";
+import { Dimensions, Image, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+
+import { Box, Text } from "@gluestack-ui/themed";
+
+//Components
+import AutoOrientedImage from "../AutoOrientedImage";
+
+//Icons
+import { Like, Scan, Star } from "@/assets/icons";
+
+//Stores
 import { themeStore } from "@/stores";
-import { StarIcon, StarIconEmpty } from "@/assets/icons";
-import { ButtonGroup } from "@gluestack-ui/themed";
+
+//Types
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackHomeParamList } from "@/routes/HomeStack";
+import { PromoTypes } from "@/types";
+import Chip from "../Chip";
+
+const widthScreen = Dimensions.get("screen").width;
+type NavigationType = NativeStackNavigationProp<RootStackHomeParamList>;
 
 interface CardPromosProps {
-  data: Promos;
+  data: PromoTypes;
+  autoOriented?: boolean;
+  hImage?: number;
+  wImage?: number;
+  mb?: number;
+  mr?: number;
 }
 
-const CardPromo: React.FC<CardPromosProps> = ({ data }) => {
+const CardPromo: React.FC<CardPromosProps> = ({
+  data,
+  autoOriented = false,
+  hImage = 100,
+  wImage = 100,
+  mb = 32,
+  mr = 0,
+}) => {
   const theme = themeStore((store) => store);
+  const navigation = useNavigation<NavigationType>();
   return (
-    <Box
-      flexDirection="row"
-      h={172}
-      mb={32}
-      borderRadius={15}
-      overflow="hidden"
-      bg={theme.gray2}
-    >
-      <Box w="50%" padding={10}>
-        <Box>
-          <Text size="xl" fontWeight="bold" color={theme.white}>
-            {data.name}
-          </Text>
-          <Text size="sm" color={theme.secondaryText}>
-            {data.description}
-          </Text>
-        </Box>
-        <Box>
-          <Button mt={8} variant="outline" borderColor={theme.primary}>
-            <Text color={theme.primary}>Adquirir promo</Text>
-          </Button>
-          <ButtonText mt={8} color={theme.blue}>
-            Ver más
-          </ButtonText>
-        </Box>
-      </Box>
+    <Pressable onPress={() => navigation.navigate("Promo", { promo: data })}>
       <Box
-        position="relative"
-        h={172}
-        bg="red"
-        w="50%"
-        borderBottomLeftRadius={80}
+        mb={mb}
+        mr={mr}
+        borderRadius={8}
+        bg={theme.white}
         overflow="hidden"
+        position="relative"
       >
-        <ImageBackground
-          source={{ uri: data.banner }}
-          style={{ height: "88%" }}
-        ></ImageBackground>
-        <Box
-          position="absolute"
-          alignItems="flex-end"
-          paddingHorizontal={5}
-          justifyContent="center"
-          h={40}
-          bottom={0}
-          w="100%"
-          bg={theme.green}
+        {autoOriented ? (
+          <AutoOrientedImage source={data.banner} width={widthScreen * 0.95} />
+        ) : (
+          <Image
+            source={{ uri: data.banner }}
+            style={{ height: hImage, width: wImage }}
+          />
+        )}
+        <LinearGradient
+          colors={[
+            "transparent",
+            "transparent",
+            "transparent",
+            `#0000004a`,
+            `#000000c3`,
+          ]}
+          start={{ x: 1, y: -1 }}
+          end={{ x: 0, y: 1 }}
+          style={{
+            height: "100%",
+            marginTop: -100,
+            zIndex: 100,
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+          }}
         >
-          <Text color={theme.white}>{data.percentage}</Text>
-        </Box>
+          <Box
+            paddingVertical={2}
+            paddingHorizontal={15}
+            backgroundColor={`${theme.green}95`}
+            borderRadius={100}
+            position="absolute"
+            top={10}
+            left={10}
+            zIndex={1000}
+          >
+            <Text color={theme.white}>Gratis</Text>
+          </Box>
+          <Box position="absolute" bottom={10} left={10}>
+            <Text color={theme.white} fontWeight="$bold" mb={8}>
+              Nombre de promo demaciado largo
+            </Text>
+            <Box flexDirection="row" gap={5}>
+              <Chip
+                bg={theme.white}
+                colorValue={theme.white}
+                value="110"
+                icon={<Scan size={15} />}
+              />
+              <Chip
+                bg={theme.primary}
+                colorValue={theme.white}
+                value="80"
+                icon={<Like size={18} color={theme.white} />}
+              />
+              <Chip
+                bg={theme.yellow}
+                colorValue={theme.white}
+                value="110"
+                icon={<Star size={18} />}
+              />
+            </Box>
+          </Box>
+        </LinearGradient>
       </Box>
-    </Box>
+    </Pressable>
   );
 };
 export default CardPromo;
